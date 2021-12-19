@@ -27,7 +27,7 @@ PRACTICUM_ENDPOINT = (
     'https://practicum.yandex.ru/api/'
     'user_api/homework_statuses/'
 )
-HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
+PRACTICUM_ENDPOINT_HEADERS = {'Authorization': f'OAuth {PRACTICUM_TOKEN}'}
 
 
 HOMEWORK_STATUSES = {
@@ -56,15 +56,15 @@ def get_api_answer(current_timestamp):
     try:
         response = requests.get(
             PRACTICUM_ENDPOINT,
-            headers=HEADERS,
-            params=params)
+            headers=PRACTICUM_ENDPOINT_HEADERS,
+            params=params
+        )
         if response.status_code == 200:
-            response_json = response.json()
+            return response.json()
+        else:
+            raise
     except Exception as error:
         logging.error(f'Ошибка запроса к API: {error}')
-    else:
-        if response.status_code == 200:
-            return response_json
         raise BadResponseError(response.status_code, PRACTICUM_ENDPOINT)
 
 
@@ -89,7 +89,7 @@ def parse_status(homework: Dict) -> str:
     В случае успеха возвращает строку для отправки в Telegram.
     """
     homework_status = homework['status']
-    if homework_status not in HOMEWORK_STATUSES.keys():
+    if homework_status not in HOMEWORK_STATUSES:
         error_message = 'недокументированный статус домашней работы'
         logging.error(error_message)
         raise KeyError(error_message)
@@ -114,7 +114,7 @@ def main() -> None:
         return
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     current_timestamp = int(time.time())
-    cach_message = ''
+    cache_message = ''
     while True:
         try:
             response = get_api_answer(current_timestamp)
@@ -133,9 +133,9 @@ def main() -> None:
         except Exception as error:
             message = f'Ошибка: {error}'
             logging.error(message)
-            if message != cach_message:
+            if message != cache_message:
                 send_message(bot, message)
-                cach_message = message
+                cache_message = message
             time.sleep(RETRY_TIME)
 
 
