@@ -61,8 +61,7 @@ def get_api_answer(current_timestamp):
         )
         if response.status_code == 200:
             return response.json()
-        else:
-            raise
+        raise ConnectionError
     except Exception as error:
         logging.error(f'Ошибка запроса к API: {error}')
         raise BadResponseError(response.status_code, PRACTICUM_ENDPOINT)
