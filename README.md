@@ -1,2 +1,7 @@
-# homework_bot
-python telegram bot
+# @GiskardRobot
+## Telegram-бот  для оповещения об изменении статуса проверки домашней работы.
+### Технологии:
+- Python 3.8.5
+- https://github.com/python-telegram-bot/python-telegram-bot.git
+### Описание:
+  Раз в 10 минут бот делает запрос к API https://practicum.yandex.ru/api/ и в случае изменения статуса либо возникновении неполадок отправляет соответствующее письмо в Telegram. Для корректной работы бота необходимы токены Практикума и Telegram, а также ID чата в Telegram, куда будут присылаться сообщения.
