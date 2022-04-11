@@ -1,5 +1,5 @@
 # @GiskardRobot
-## Telegram-бот  для оповещения об изменении статуса проверки домашней работы.
+## Telegram-бот  для оповещения об изменении статуса проверки домашней работы на Яндекс.Практикуме.
 ### Технологии:
 - Python 3.8.5
 - https://github.com/python-telegram-bot/python-telegram-bot.git
